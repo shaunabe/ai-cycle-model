@@ -12,20 +12,20 @@
   --blue:#0000E9; --green:#00A100; --red:#D90000;
   --purple:#8000FF; --azure:#0080FF; --orange:#F05A00; --magenta:#E900E9;
   --bg:#FFFFFF; --panel:#F1F1F1; --grid:#efefef; --grid2:#d9d9d9;
-  --ink:#000000; --muted:#5a5a5a;
+  --ink:#000000; --muted:#000000;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:15px}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
 /* header */
-header{border-bottom:1px solid var(--grid2);padding:28px 0 22px}
+header{background:#000;color:#fff;padding:34px 0 30px}
 .brandline{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .orbit{width:30px;height:30px;flex:none}
-.kicker{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.kicker{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#fff}
 h1{font-size:clamp(22px,3.4vw,34px);font-weight:600;line-height:1.18;max-width:760px}
-h1 .b{color:var(--blue)}
-.sub{margin-top:10px;max-width:720px;color:var(--muted);font-size:14px}
+h1 .b{color:#fff}
+.sub{margin-top:10px;max-width:720px;color:#fff;font-size:14px;font-weight:400}
 
 /* layout */
 .grid{display:grid;grid-template-columns:330px 1fr;gap:28px;padding:26px 0}
@@ -42,8 +42,8 @@ h1 .b{color:var(--blue)}
 .ctl{background:var(--panel);border-radius:10px;padding:14px 16px 16px;margin-bottom:12px}
 .ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;font-weight:500;margin-bottom:2px}
 .ctl .val{font-weight:600;font-variant-numeric:tabular-nums}
-.ctl .hint{font-size:12px;color:var(--muted);margin-bottom:8px}
-input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:7px;border-radius:7px;background:linear-gradient(to right,var(--blue) 0%,var(--blue) var(--p,50%),#dcdcdc var(--p,50%),#dcdcdc 100%);outline:none;cursor:pointer}
+.ctl .hint{font-size:12px;color:#000;font-weight:400;margin-bottom:8px}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:7px;border-radius:7px;background:linear-gradient(to right,var(--blue) 0%,var(--blue) var(--p,50%),#d9d9d9 var(--p,50%),#d9d9d9 100%);outline:none;cursor:pointer}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:21px;height:21px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(0,0,233,.35)}
@@ -75,8 +75,8 @@ input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(0,0,233,.35)}
 .essay{border-top:1px solid var(--grid2);padding:34px 0 16px;max-width:840px}
 .essay h3{font-size:16px;font-weight:600;margin:24px 0 6px;display:flex;align-items:center;gap:10px}
 .essay h3 .node{width:10px;height:10px;border-radius:50%;background:var(--blue);flex:none}
-.essay p{color:#1c1c1c;font-size:14.5px;margin-bottom:8px;max-width:760px}
-footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;color:var(--muted)}
+.essay p{color:#000;font-size:14.5px;margin-bottom:8px;max-width:760px}
+footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;color:#000}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -87,7 +87,7 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
     <div class="brandline">
       <svg class="orbit" viewBox="0 0 40 40" aria-hidden="true">
         <ellipse cx="20" cy="20" rx="17" ry="9" fill="none" stroke="#0000E9" stroke-width="2.5" transform="rotate(-22 20 20)"/>
-        <circle cx="20" cy="20" r="4.6" fill="#000"/>
+        <circle cx="20" cy="20" r="4.6" fill="#fff"/>
         <circle cx="33.5" cy="13.5" r="3" fill="#0000E9"/>
       </svg>
       <span class="kicker">Third Sphere · Internal scenario tool</span>
@@ -174,7 +174,7 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
     </div>
     <svg id="chart" viewBox="0 0 860 430" role="img" aria-label="24 month projected price paths"></svg>
     <div class="analogtoggles">
-      <span style="color:var(--muted);font-weight:500">Overlay prior cycles:</span>
+      <span style="color:#000;font-weight:500">Overlay prior cycles:</span>
       <label style="color:var(--purple)"><input type="checkbox" id="a_bust" checked><span class="dash"></span>Nasdaq from Mar-2000 peak</label>
       <label style="color:var(--orange)"><input type="checkbox" id="a_boom"><span class="dash"></span>Nasdaq 1998–2000 melt-up</label>
       <label style="color:var(--magenta)"><input type="checkbox" id="a_saas"><span class="dash"></span>Cloud/SaaS from Nov-2021 peak</label>
@@ -381,12 +381,12 @@ function draw(){
   // grid + y labels
   for(let v=lo;v<=hi;v+=20){
     s+=`<line x1="${M.l}" y1="${y(v)}" x2="${W-M.r}" y2="${y(v)}" stroke="#efefef" stroke-width="1"/>`;
-    s+=`<text x="${M.l-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="#5a5a5a" font-family="Poppins">${v}</text>`;
+    s+=`<text x="${M.l-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="#000" font-family="Poppins">${v}</text>`;
   }
   // baseline at 100
   s+=`<line x1="${M.l}" y1="${y(100)}" x2="${W-M.r}" y2="${y(100)}" stroke="#d9d9d9" stroke-width="1.4" stroke-dasharray="2 4"/>`;
   // x labels each quarter
-  months.forEach((m,i)=>{ s+=`<text x="${x(i*3)}" y="${H-10}" text-anchor="middle" font-size="11" fill="#5a5a5a" font-family="Poppins">${m}</text>`; });
+  months.forEach((m,i)=>{ s+=`<text x="${x(i*3)}" y="${H-10}" text-anchor="middle" font-size="11" fill="#000" font-family="Poppins">${m}</text>`; });
 
   // analogs (thin dashed)
   for(const k in ANALOGS){ if(!document.getElementById(k).checked) continue;
@@ -394,16 +394,16 @@ function draw(){
     s+=`<path d="${path(a.d,x,y)}" fill="none" stroke="${a.color}" stroke-width="1.6" stroke-dasharray="5 5" opacity=".85"/>`;
   }
   // private (green, step-ish with nodes)
-  s+=`<path d="${path(prv,x,y)}" fill="none" stroke="#00A100" stroke-width="2.6" stroke-linejoin="round"/>`;
+  s+=`<path d="${path(prv,x,y)}" fill="none" stroke="#00A100" stroke-width="2.8" stroke-linejoin="round"/>`;
   // public (blue) — signature: mono line + solid quarterly nodes (24:7 dot-to-line ratio)
-  s+=`<path d="${path(pub,x,y)}" fill="none" stroke="#0000E9" stroke-width="2.6" stroke-linejoin="round"/>`;
+  s+=`<path d="${path(pub,x,y)}" fill="none" stroke="#0000E9" stroke-width="2.8" stroke-linejoin="round"/>`;
   for(let i=0;i<=24;i+=3){
-    s+=`<circle cx="${x(i)}" cy="${y(pub[i])}" r="4.4" fill="#0000E9"/>`;
-    s+=`<circle cx="${x(i)}" cy="${y(prv[i])}" r="4.4" fill="#00A100"/>`;
+    s+=`<circle cx="${x(i)}" cy="${y(pub[i])}" r="4.8" fill="#0000E9"/>`;
+    s+=`<circle cx="${x(i)}" cy="${y(prv[i])}" r="4.8" fill="#00A100"/>`;
   }
   // end labels
-  s+=`<text x="${x(24)-2}" y="${y(pub[24])-10}" text-anchor="end" font-size="12" font-weight="600" fill="#0000E9" font-family="Poppins">${Math.round(pub[24])}</text>`;
-  s+=`<text x="${x(24)-2}" y="${y(prv[24])+18}" text-anchor="end" font-size="12" font-weight="600" fill="#00A100" font-family="Poppins">${Math.round(prv[24])}</text>`;
+  s+=`<text x="${x(24)-2}" y="${y(pub[24])-10}" text-anchor="end" font-size="12" font-weight="600" fill="#000" font-family="Poppins">${Math.round(pub[24])}</text>`;
+  s+=`<text x="${x(24)-2}" y="${y(prv[24])+18}" text-anchor="end" font-size="12" font-weight="600" fill="#000" font-family="Poppins">${Math.round(prv[24])}</text>`;
   svg.innerHTML=s;
 
   // stats
@@ -414,9 +414,8 @@ function draw(){
   document.getElementById('s_dd').textContent='−'+(mdd*100).toFixed(0)+'%';
   const gap=prv[24]-pub[24];
   document.getElementById('s_gap').textContent=(gap>=0?'+':'')+gap.toFixed(0)+' pts';
-  document.getElementById('s_pub').style.color = pub[24]>=100 ? '#000' : '#D90000';
   document.getElementById('s_dd').style.color  = mdd>0.25 ? '#D90000' : '#000';
-  document.getElementById('s_gap').style.color = gap>15 ? '#D90000' : '#000';
+  document.getElementById('s_gap').style.color = '#000';
 
   // closest rhyme (shape distance, normalized)
   const norm=a=>{const m=Math.max(...a);return a.map(v=>v/m);};
@@ -429,7 +428,7 @@ function draw(){
   const verdict = gap>15
     ? 'Private marks exit '+gap.toFixed(0)+' points above public — that spread is deferred repricing in LP portfolios, visible first in secondaries pricing.'
     : 'Private marks roughly track public by exit — limited overhang in this scenario.';
-  const engine='<br><span style="color:#5a5a5a">Engine readout: revenue growth '+(gBase*100).toFixed(0)+'%/yr'
+  const engine='<br><span style="color:#000;font-weight:400">Engine readout: revenue growth '+(gBase*100).toFixed(0)+'%/yr'
     +(capped?' — <strong>infrastructure-capped</strong> (demand-side upside can\'t express until the constraint loosens)':' (demand-limited)')
     +' · justified multiple '+(J*100).toFixed(0)+'% of today\'s.</span>';
   document.getElementById('rhyme').innerHTML='<strong>Closest historical rhyme:</strong> '+best.name+'. '+verdict+engine;
@@ -464,13 +463,13 @@ function drawCausal(){
     if(map[i][1]) s+=line(ix+8,iy(i),mx2-58,My,'#d9d9d9',.9);
   });
   // coupling edges: backlash → open-source & distributed; resistance → distributed
-  s+=line(ix+8,iy(7),ix+8,iy(0),'#D90000',.55,true);
-  s+=line(ix+8,iy(7),ix+8,iy(8),'#D90000',.55,true);
-  s+=line(ix+8,iy(6),ix+8,iy(8),'#D90000',.55,true);
-  s+=line(ix+8,iy(9),ix+8,iy(0),'#D90000',.55,true);
-  s+=line(ix+8,iy(9),ix+8,iy(8),'#D90000',.55,true);
-  s+=line(ix+8,iy(10),ix+8,iy(4),'#00A100',.6,true);
-  s+=line(ix+8,iy(10),ix+8,iy(7),'#D90000',.55,true);
+  s+=line(ix+8,iy(7),ix+8,iy(0),'#0000E9',.6,true);
+  s+=line(ix+8,iy(7),ix+8,iy(8),'#0000E9',.6,true);
+  s+=line(ix+8,iy(6),ix+8,iy(8),'#0000E9',.6,true);
+  s+=line(ix+8,iy(9),ix+8,iy(0),'#0000E9',.6,true);
+  s+=line(ix+8,iy(9),ix+8,iy(8),'#0000E9',.6,true);
+  s+=line(ix+8,iy(10),ix+8,iy(4),'#0000E9',.6,true);
+  s+=line(ix+8,iy(10),ix+8,iy(7),'#0000E9',.6,true);
   s+=line(rx+62,Ry,px-46,Py,'#0000E9',1);
   s+=line(mx2+62,My,px-46,Py,'#0000E9',1);
   // green private tail
@@ -480,19 +479,19 @@ function drawCausal(){
     s+=`<circle cx="${ix}" cy="${iy(i)}" r="5.2" fill="#000"/>`;
     s+=`<text x="${ix-14}" y="${iy(i)+4}" text-anchor="end" font-size="12" font-family="Poppins" fill="#000">${inp[0]}</text>`;
   });
-  s+=`<text x="${ix+22}" y="${iy(10)+22}" font-size="10.5" fill="#D90000" font-family="Poppins">dashed = couplings: backlash &amp; fear feed open-source (±) and local shift; resistance feeds local shift; labor displacement proves productivity (green) and fuels backlash (red)</text>`;
+  s+=`<text x="${ix+22}" y="${iy(10)+22}" font-size="10.5" fill="#000" font-family="Poppins">dashed blue = couplings: backlash &amp; fear feed open-source (±) and the local shift; resistance feeds the local shift; labor displacement proves productivity and fuels backlash</text>`;
   // engine nodes
   s+=`<circle cx="${rx}" cy="${Ry}" r="7" fill="#0000E9"/>`;
   s+=`<text x="${rx}" y="${Ry-14}" text-anchor="middle" font-size="12.5" font-weight="600" font-family="Poppins">Revenue surprise</text>`;
-  s+=`<text x="${rx}" y="${Ry+24}" text-anchor="middle" font-size="11" fill="#5a5a5a" font-family="Poppins">actual growth vs ~40%/yr priced in, capped by infrastructure</text>`;
+  s+=`<text x="${rx}" y="${Ry+24}" text-anchor="middle" font-size="11" fill="#000" font-family="Poppins">actual growth vs ~40%/yr priced in, capped by infrastructure</text>`;
   s+=`<circle cx="${mx2}" cy="${My}" r="7" fill="#0000E9"/>`;
   s+=`<text x="${mx2}" y="${My-14}" text-anchor="middle" font-size="12.5" font-weight="600" font-family="Poppins">Multiple path</text>`;
-  s+=`<text x="${mx2}" y="${My+24}" text-anchor="middle" font-size="11" fill="#5a5a5a" font-family="Poppins">mean-reverts to justified level, overshoots in panic</text>`;
+  s+=`<text x="${mx2}" y="${My+24}" text-anchor="middle" font-size="11" fill="#000" font-family="Poppins">mean-reverts to justified level, overshoots in panic</text>`;
   // price node
   s+=`<circle cx="${px}" cy="${Py}" r="8" fill="#000"/>`;
   s+=`<text x="${px+18}" y="${Py+4}" font-size="12.5" font-weight="600" font-family="Poppins">Public price</text>`;
   s+=`<text x="${px+18}" y="${Py+62}" font-size="12.5" font-weight="600" fill="#00A100" font-family="Poppins">Private marks</text>`;
-  s+=`<text x="${px+18}" y="${Py+78}" font-size="11" fill="#5a5a5a" font-family="Poppins">lagged, sticky on the way down</text>`;
+  s+=`<text x="${px+18}" y="${Py+78}" font-size="11" fill="#000" font-family="Poppins">lagged, sticky on the way down</text>`;
   c.innerHTML=s;
 }
 
