@@ -33,7 +33,9 @@ h1 .b{color:var(--blue)}
 
 /* controls */
 .controls h2,.charthead h2,.essay h2{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
-.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.presets{margin-bottom:20px}
+.preset-group-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 7px}
+.preset-row{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font-family:inherit;font-size:12.5px;font-weight:500;padding:7px 13px;border:1px solid var(--grid2);background:#fff;border-radius:999px;cursor:pointer}
 .chip:hover{border-color:var(--ink)}
 .chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -235,16 +237,27 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
 /* ---------------- parameters ---------------- */
 const S = { os:18, tok:65, ela:125, infra:45, prod:30, sup:35, resist:35, back:40, dist:20, fear:30, labor:25 };
 
-const PRESETS = {
-  'Base case':              {os:18, tok:65, ela:125, infra:45, prod:30, sup:35, resist:35, back:40, dist:20, fear:30, labor:25},
-  'Soft landing':           {os:20, tok:55, ela:140, infra:40, prod:45, sup:35, resist:25, back:25, dist:18, fear:20, labor:20},
-  'Dot-com replay':         {os:40, tok:85, ela:90,  infra:15, prod:15, sup:30, resist:40, back:60, dist:25, fear:45, labor:35},
-  'Infra supercycle':       {os:15, tok:50, ela:160, infra:80, prod:40, sup:30, resist:30, back:30, dist:12, fear:25, labor:25},
-  'Commoditization grind':  {os:50, tok:80, ela:115, infra:30, prod:30, sup:50, resist:35, back:45, dist:30, fear:30, labor:25},
-  'Backlash + edge shift':  {os:35, tok:70, ela:130, infra:55, prod:35, sup:45, resist:75, back:80, dist:45, fear:40, labor:40},
-  'Security clampdown':     {os:25, tok:60, ela:110, infra:50, prod:25, sup:35, resist:50, back:65, dist:35, fear:85, labor:30},
-  'Jobs shock':             {os:30, tok:70, ela:120, infra:45, prod:50, sup:40, resist:45, back:55, dist:30, fear:40, labor:85}
+const BASE = {os:18, tok:65, ela:125, infra:45, prod:30, sup:35, resist:35, back:40, dist:20, fear:30, labor:25};
+const PRESET_GROUPS = {
+  'Start from one driver': {
+    'Base case':                  {...BASE},
+    'Low productivity':           {...BASE, prod:15, labor:12},
+    'Slow build-out & interconnect': {...BASE, infra:85, resist:60},
+    'Cheap tokens, elastic demand':  {...BASE, tok:78, ela:165, infra:15},
+    'Cheap tokens, inelastic demand':{...BASE, tok:85, ela:90},
+    'Open-source wave':           {...BASE, os:55, dist:35},
+    'Lab backlash':               {...BASE, back:80},
+    'Security shocks':            {...BASE, fear:85},
+    'Jobs shock':                 {...BASE, labor:85}
+  },
+  'Composite scenarios': {
+    'Soft landing':               {os:20, tok:55, ela:140, infra:40, prod:45, sup:35, resist:25, back:25, dist:18, fear:20, labor:20},
+    'Dot-com replay':             {os:40, tok:85, ela:90,  infra:15, prod:15, sup:30, resist:40, back:60, dist:25, fear:45, labor:35},
+    'Backlash + edge shift':      {os:35, tok:70, ela:130, infra:55, prod:35, sup:45, resist:75, back:80, dist:45, fear:40, labor:40},
+    'Security clampdown':         {os:25, tok:60, ela:110, infra:50, prod:25, sup:35, resist:50, back:65, dist:35, fear:85, labor:30}
+  }
 };
+const PRESETS = Object.assign({}, ...Object.values(PRESET_GROUPS));
 
 /* approximate historical overlays, rebased to 100, 25 monthly points */
 const ANALOGS = {
@@ -288,6 +301,7 @@ function run(p){
   // resistance tightens the constraint; distribution routes around it
   const infraEff    = clamp(infra + 45*(resist-0.35) - 50*(distEff-0.20), 0, 130);
   const infraCap    = 0.95 - 0.0075*infraEff;              // constraint ceiling
+  const capped      = rawGrowth > infraCap;
   const gBase       = clamp(Math.min(rawGrowth, infraCap), -0.15, 1.20);
 
   // sentiment engine: justified multiple vs today's premium (today = 1.0)
@@ -344,7 +358,7 @@ function run(p){
     }
     prv.push(v);
   }
-  return {pub,prv};
+  return {pub,prv,gBase,J,capped};
 }
 
 /* ---------------- chart ---------------- */
@@ -355,7 +369,7 @@ const months=['Jun 26','Sep 26','Dec 26','Mar 27','Jun 27','Sep 27','Dec 27','Ma
 function path(d,x,y){return d.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');}
 
 function draw(){
-  const {pub,prv}=run(S);
+  const {pub,prv,gBase,J,capped}=run(S);
   const series=[pub,prv];
   for(const k in ANALOGS) if(document.getElementById(k).checked) series.push(ANALOGS[k].d);
   let lo=Math.min(...series.flat()), hi=Math.max(...series.flat());
@@ -415,7 +429,10 @@ function draw(){
   const verdict = gap>15
     ? 'Private marks exit '+gap.toFixed(0)+' points above public — that spread is deferred repricing in LP portfolios, visible first in secondaries pricing.'
     : 'Private marks roughly track public by exit — limited overhang in this scenario.';
-  document.getElementById('rhyme').innerHTML='<strong>Closest historical rhyme:</strong> '+best.name+'. '+verdict;
+  const engine='<br><span style="color:#5a5a5a">Engine readout: revenue growth '+(gBase*100).toFixed(0)+'%/yr'
+    +(capped?' — <strong>infrastructure-capped</strong> (demand-side upside can\'t express until the constraint loosens)':' (demand-limited)')
+    +' · justified multiple '+(J*100).toFixed(0)+'% of today\'s.</span>';
+  document.getElementById('rhyme').innerHTML='<strong>Closest historical rhyme:</strong> '+best.name+'. '+verdict+engine;
 
   drawCausal();
 }
@@ -510,10 +527,16 @@ function setAll(vals,activeChip){
     draw(); });
 });
 const pr=document.getElementById('presets');
-Object.keys(PRESETS).forEach(name=>{
-  const b=document.createElement('button'); b.className='chip'; b.textContent=name;
-  b.onclick=()=>setAll(PRESETS[name],name);
-  pr.appendChild(b);
+Object.entries(PRESET_GROUPS).forEach(([group,items])=>{
+  const h=document.createElement('div'); h.className='preset-group-label'; h.textContent=group;
+  pr.appendChild(h);
+  const row=document.createElement('div'); row.className='preset-row';
+  Object.keys(items).forEach(name=>{
+    const b=document.createElement('button'); b.className='chip'; b.textContent=name;
+    b.onclick=()=>setAll(items[name],name);
+    row.appendChild(b);
+  });
+  pr.appendChild(row);
 });
 ['a_bust','a_boom','a_saas'].forEach(id=>document.getElementById(id).addEventListener('change',draw));
 setAll(PRESETS['Base case'],'Base case');
