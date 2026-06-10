@@ -132,6 +132,23 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
       <div class="hint">AI-native startups realize gains without legacy overhead — faster demand, but spend shifts to challengers.</div>
       <input type="range" id="sup" min="10" max="60" step="1">
     </div>
+
+    <h2 style="margin-top:22px">Headwinds &amp; shifts</h2>
+    <div class="ctl">
+      <label>Datacenter buildout resistance <span class="val" id="v_resist"></span></label>
+      <div class="hint">Moratoriums, permitting fights, water &amp; grid politics. Tightens the constraint without the scarcity premium — and pushes builders toward distributed options.</div>
+      <input type="range" id="resist" min="0" max="100" step="1">
+    </div>
+    <div class="ctl">
+      <label>Public backlash against AI labs <span class="val" id="v_back"></span></label>
+      <div class="hint">Negative sentiment compresses multiples directly, and drives users toward open-source and local alternatives (couplings applied automatically).</div>
+      <input type="range" id="back" min="0" max="100" step="1">
+    </div>
+    <div class="ctl">
+      <label>Local / distributed inference shift by 2028 <span class="val" id="v_dist"></span></label>
+      <div class="hint">On-device, behind-the-meter, and edge inference. Routes around datacenter constraints — but that revenue leaks out of the listed AI complex. From our <a href="https://github.com/shaunabe/ai_infra_sim" style="color:inherit">infra simulator</a>.</div>
+      <input type="range" id="dist" min="0" max="60" step="1">
+    </div>
   </aside>
 
   <!-- ============ CHART ============ -->
@@ -161,7 +178,7 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
 
     <div class="machine">
       <h2>How the levers connect</h2>
-      <svg id="causal" viewBox="0 0 860 240" role="img" aria-label="Causal diagram of model"></svg>
+      <svg id="causal" viewBox="0 0 860 320" role="img" aria-label="Causal diagram of model"></svg>
     </div>
   </main>
 </div>
@@ -185,6 +202,12 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
   <h3><span class="node"></span>The bubble, if it is one, is disproportionately private</h3>
   <p>In 2000 the excess was listed and repriced in weeks. Today the largest AI valuations sit in private hands, marked quarterly, with downside stickiness — which is exactly what the green line models. The gap between the blue and green lines at month 24 is the unrealized repricing sitting in LP portfolios. Watch secondaries, not just tickers.</p>
 
+  <h3><span class="node"></span>Social license is a new constraint the fiber boom never faced</h3>
+  <p>Nobody held a town hall to stop fiber conduit. Datacenters drink water, bid up power, and hum next to neighborhoods — so resistance acts like a second infrastructure constraint, but with the opposite multiple effect: scarcity from physics earns a premium, scarcity from politics earns a regulatory discount and stranded-asset risk. Lab backlash compounds it, and it doesn't stay contained — in the model it leaks into open-source adoption (users hedging away from labs) and into the local-inference shift. The dashed red couplings in the diagram above are the point: sentiment is upstream of architecture.</p>
+
+  <h3><span class="node"></span>Distributed inference routes around the bottleneck — and around the index</h3>
+  <p>Our companion <a href="https://github.com/shaunabe/ai_infra_sim">AI infrastructure simulator</a> maps seven deployment architectures from gigawatt campuses to behind-the-meter micro-DCs and consumer devices, and its base case has open source carrying 40–50% of inference by 2028. The pricing implication cuts both ways: a shift to local and edge inference relieves the datacenter constraint (more usage growth gets through), but that compute happens on hardware the listed AI complex doesn't monetize. Usage can boom while hyperscaler and lab revenue capture shrinks — which is why the distributed-shift slider raises the growth ceiling while lowering the multiple. It's also where seed-stage exposure to the buildout (behind-the-meter, powered land, brownfield) diverges most sharply from holding the public complex.</p>
+
   <h3><span class="node"></span>This time capex is funded by cash flow, not debt</h3>
   <p>The hyperscalers are spending earnings, not junk bonds — so a demand disappointment transmits to equity multiples first rather than credit markets, arguing for a 2022-style 50–60% growth-stock drawdown over a 2008-style systemic event. Unless debt-funded neocloud buildouts change that mix. Watch the financing channel, because it determines which historical overlay applies.</p>
 </div>
@@ -194,14 +217,15 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
 <script>
 'use strict';
 /* ---------------- parameters ---------------- */
-const S = { os:18, tok:65, ela:125, infra:45, prod:30, sup:35 };
+const S = { os:18, tok:65, ela:125, infra:45, prod:30, sup:35, resist:35, back:40, dist:20 };
 
 const PRESETS = {
-  'Base case':              {os:18, tok:65, ela:125, infra:45, prod:30, sup:35},
-  'Soft landing':           {os:20, tok:55, ela:140, infra:40, prod:45, sup:35},
-  'Dot-com replay':         {os:40, tok:85, ela:90,  infra:15, prod:15, sup:30},
-  'Infra supercycle':       {os:15, tok:50, ela:160, infra:80, prod:40, sup:30},
-  'Commoditization grind':  {os:50, tok:80, ela:115, infra:30, prod:30, sup:50}
+  'Base case':              {os:18, tok:65, ela:125, infra:45, prod:30, sup:35, resist:35, back:40, dist:20},
+  'Soft landing':           {os:20, tok:55, ela:140, infra:40, prod:45, sup:35, resist:25, back:25, dist:18},
+  'Dot-com replay':         {os:40, tok:85, ela:90,  infra:15, prod:15, sup:30, resist:40, back:60, dist:25},
+  'Infra supercycle':       {os:15, tok:50, ela:160, infra:80, prod:40, sup:30, resist:30, back:30, dist:12},
+  'Commoditization grind':  {os:50, tok:80, ela:115, infra:30, prod:30, sup:50, resist:35, back:45, dist:30},
+  'Backlash + edge shift':  {os:35, tok:70, ela:130, infra:55, prod:35, sup:45, resist:75, back:80, dist:45}
 };
 
 /* approximate historical overlays, rebased to 100, 25 monthly points */
@@ -219,19 +243,33 @@ function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
 
 function run(p){
   const os=p.os/100, tok=p.tok/100, ela=p.ela/100, infra=p.infra, prod=p.prod/100, sup=p.sup/100;
+  const resist=p.resist/100, back=p.back/100, dist=p.dist/100;
 
-  // fundamental engine: annualized revenue growth
+  // couplings, centered on baseline (resist .35, back .40, dist .20):
+  // backlash drives open-source adoption and local inference;
+  // resistance pushes builders toward distributed options (cf. ai_infra_sim)
+  const osEff   = clamp(os + 0.15*(back-0.40), 0.05, 0.75);
+  const distEff = clamp(dist + 0.10*(back-0.40) + 0.08*(resist-0.35), 0, 0.70);
+
+  // fundamental engine: annualized revenue growth (for the listed AI complex)
   const demandCore  = 0.20 + 1.10*prod + 0.45*sup;        // productivity + startup throughput
   const priceVolume = tok*(ela-1);                         // Jevons net effect
-  const rawGrowth   = demandCore + priceVolume;
-  const infraCap    = 0.95 - 0.0075*infra;                 // constraint ceiling
+  const leak        = 0.20*Math.max(0,distEff-0.20)        // edge/local revenue leaks out of the complex
+                    + 0.10*Math.max(0,back-0.40);          // procurement chill from backlash
+  const rawGrowth   = demandCore + priceVolume - leak;
+  // resistance tightens the constraint; distribution routes around it
+  const infraEff    = clamp(infra + 45*(resist-0.35) - 50*(distEff-0.20), 0, 130);
+  const infraCap    = 0.95 - 0.0075*infraEff;              // constraint ceiling
   const gBase       = clamp(Math.min(rawGrowth, infraCap), -0.15, 1.20);
 
   // sentiment engine: justified multiple vs today's premium (today = 1.0)
   let J = 1.0
-        - 0.90*(os-0.18)                 // commoditization of the model layer
+        - 0.90*(osEff-0.18)              // commoditization of the model layer
         - 0.60*(tok-0.65)*(1.6-ela)      // deflation hurts more when demand is inelastic
-        + 0.0022*(infra-45)              // scarcity premium / overbuild protection
+        + 0.0022*(infra-45)              // scarcity premium (raw scarcity only — resistance earns no premium)
+        - 0.28*(resist-0.35)             // social-license + stranded-asset risk on the buildout complex
+        - 0.42*(back-0.40)               // regulatory/brand discount on the labs
+        - 0.50*Math.max(0,distEff-0.20)  // value migrating off centralized incumbents
         + 0.70*(prod-0.30)               // realized productivity sustains pricing
         + 0.20*(sup-0.35);               // startup-led value keeps growth narrative alive
   J = clamp(J, 0.35, 1.30);
@@ -353,23 +391,30 @@ function draw(){
 function drawCausal(){
   const c=document.getElementById('causal');
   const inputs=[
-    ['Open-source share','M',-1],['Token deflation','B',0],['Demand elasticity','R',1],
-    ['Infra constraint','B',0],['Productivity realized','B',1],['Startup-led value','B',1]
+    ['Open-source share'],['Token deflation'],['Demand elasticity'],
+    ['Infra constraint'],['Productivity realized'],['Startup-led value'],
+    ['Buildout resistance'],['Lab backlash'],['Distributed shift']
   ];
   // node positions
-  const ix=120, rx=430, mx2=430, px=740;
-  const iy=i=>36+i*34;
-  const Ry=70, My=176, Py=122;
+  const ix=150, rx=430, mx2=430, px=740;
+  const iy=i=>26+i*30;
+  const Ry=88, My=210, Py=150;
   let s='';
-  const line=(x1,y1,x2,y2,col,op)=>`<path d="M${x1} ${y1} C ${x1+90} ${y1}, ${x2-90} ${y2}, ${x2} ${y2}" fill="none" stroke="${col}" stroke-width="1.6" opacity="${op}"/>`;
-  // edges input → engines
-  const map=[ //[toRevenue?, toMultiple?]
-    [false,true],[true,true],[true,false],[true,true],[true,true],[true,true]
+  const line=(x1,y1,x2,y2,col,op,dash)=>`<path d="M${x1} ${y1} C ${x1+90} ${y1}, ${x2-90} ${y2}, ${x2} ${y2}" fill="none" stroke="${col}" stroke-width="1.6" opacity="${op}"${dash?' stroke-dasharray="3 4"':''}/>`;
+  // edges input → engines: [toRevenue?, toMultiple?]
+  const map=[
+    [false,true],[true,true],[true,false],
+    [true,true],[true,true],[true,true],
+    [true,true],[true,true],[true,true]
   ];
   inputs.forEach((inp,i)=>{
     if(map[i][0]) s+=line(ix+8,iy(i),rx-58,Ry,'#d9d9d9',.9);
     if(map[i][1]) s+=line(ix+8,iy(i),mx2-58,My,'#d9d9d9',.9);
   });
+  // coupling edges: backlash → open-source & distributed; resistance → distributed
+  s+=line(ix+8,iy(7),ix+8,iy(0),'#D90000',.55,true);
+  s+=line(ix+8,iy(7),ix+8,iy(8),'#D90000',.55,true);
+  s+=line(ix+8,iy(6),ix+8,iy(8),'#D90000',.55,true);
   s+=line(rx+62,Ry,px-46,Py,'#0000E9',1);
   s+=line(mx2+62,My,px-46,Py,'#0000E9',1);
   // green private tail
@@ -379,6 +424,7 @@ function drawCausal(){
     s+=`<circle cx="${ix}" cy="${iy(i)}" r="5.2" fill="#000"/>`;
     s+=`<text x="${ix-14}" y="${iy(i)+4}" text-anchor="end" font-size="12" font-family="Poppins" fill="#000">${inp[0]}</text>`;
   });
+  s+=`<text x="${ix+22}" y="${iy(8)+22}" font-size="10.5" fill="#D90000" font-family="Poppins">dashed red = couplings: backlash feeds open-source &amp; local shift; resistance feeds local shift</text>`;
   // engine nodes
   s+=`<circle cx="${rx}" cy="${Ry}" r="7" fill="#0000E9"/>`;
   s+=`<text x="${rx}" y="${Ry-14}" text-anchor="middle" font-size="12.5" font-weight="600" font-family="Poppins">Revenue surprise</text>`;
@@ -398,7 +444,10 @@ function drawCausal(){
 const fmts={
   os:v=>v+'%', tok:v=>'−'+v+'%/yr', ela:v=>(v/100).toFixed(2)+'×',
   infra:v=>v<=20?'loose ('+v+')':v>=70?'severe ('+v+')':'moderate ('+v+')',
-  prod:v=>v+'% of pilots', sup:v=>v+'%'
+  prod:v=>v+'% of pilots', sup:v=>v+'%',
+  resist:v=>v<=20?'low ('+v+')':v>=70?'fierce ('+v+')':'rising ('+v+')',
+  back:v=>v<=20?'mild ('+v+')':v>=70?'hostile ('+v+')':'wary ('+v+')',
+  dist:v=>v+'% of inference'
 };
 function paint(id){
   const el=document.getElementById(id);
@@ -412,7 +461,7 @@ function setAll(vals,activeChip){
   document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.textContent===activeChip));
   draw();
 }
-['os','tok','ela','infra','prod','sup'].forEach(id=>{
+['os','tok','ela','infra','prod','sup','resist','back','dist'].forEach(id=>{
   const el=document.getElementById(id);
   el.value=S[id]; paint(id);
   el.addEventListener('input',()=>{ S[id]=+el.value; paint(id);
