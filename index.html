@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Cycle Model — 24-Month Public &amp; Private Pricing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#0000E9; --green:#00A100; --red:#D90000;
+  --purple:#8000FF; --azure:#0080FF; --orange:#F05A00; --magenta:#E900E9;
+  --bg:#FFFFFF; --panel:#F1F1F1; --grid:#efefef; --grid2:#d9d9d9;
+  --ink:#000000; --muted:#5a5a5a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* header */
+header{border-bottom:1px solid var(--grid2);padding:28px 0 22px}
+.brandline{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.orbit{width:30px;height:30px;flex:none}
+.kicker{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(22px,3.4vw,34px);font-weight:600;line-height:1.18;max-width:760px}
+h1 .b{color:var(--blue)}
+.sub{margin-top:10px;max-width:720px;color:var(--muted);font-size:14px}
+
+/* layout */
+.grid{display:grid;grid-template-columns:330px 1fr;gap:28px;padding:26px 0}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+/* controls */
+.controls h2,.charthead h2,.essay h2{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.chip{font-family:inherit;font-size:12.5px;font-weight:500;padding:7px 13px;border:1px solid var(--grid2);background:#fff;border-radius:999px;cursor:pointer}
+.chip:hover{border-color:var(--ink)}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ctl{background:var(--panel);border-radius:10px;padding:14px 16px 16px;margin-bottom:12px}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;font-weight:500;margin-bottom:2px}
+.ctl .val{font-weight:600;font-variant-numeric:tabular-nums}
+.ctl .hint{font-size:12px;color:var(--muted);margin-bottom:8px}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:7px;border-radius:7px;background:linear-gradient(to right,var(--blue) 0%,var(--blue) var(--p,50%),#dcdcdc var(--p,50%),#dcdcdc 100%);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:21px;height:21px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--ink);border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+input[type=range]:focus-visible{box-shadow:0 0 0 3px rgba(0,0,233,.35)}
+
+/* chart panel */
+.charthead{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;font-weight:500}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.dash{width:18px;height:0;border-top:2px dashed currentColor;display:inline-block}
+#chart{width:100%;height:auto;display:block;margin-top:8px}
+.analogtoggles{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:12.5px}
+.analogtoggles label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:500}
+.analogtoggles input{accent-color:var(--ink)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+.stat{border:1px solid var(--grid2);border-radius:10px;padding:13px 15px}
+.stat .n{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:11.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.rhyme{margin-top:14px;background:var(--panel);border-radius:10px;padding:13px 16px;font-size:13.5px}
+.rhyme strong{font-weight:600}
+
+/* causal diagram */
+.machine{margin-top:26px}
+#causal{width:100%;height:auto;display:block}
+
+/* essay */
+.essay{border-top:1px solid var(--grid2);padding:34px 0 16px;max-width:840px}
+.essay h3{font-size:16px;font-weight:600;margin:24px 0 6px;display:flex;align-items:center;gap:10px}
+.essay h3 .node{width:10px;height:10px;border-radius:50%;background:var(--blue);flex:none}
+.essay p{color:#1c1c1c;font-size:14.5px;margin-bottom:8px;max-width:760px}
+footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brandline">
+      <svg class="orbit" viewBox="0 0 40 40" aria-hidden="true">
+        <ellipse cx="20" cy="20" rx="17" ry="9" fill="none" stroke="#0000E9" stroke-width="2.5" transform="rotate(-22 20 20)"/>
+        <circle cx="20" cy="20" r="4.6" fill="#000"/>
+        <circle cx="33.5" cy="13.5" r="3" fill="#0000E9"/>
+      </svg>
+      <span class="kicker">Third Sphere · Internal scenario tool</span>
+    </div>
+    <h1>What do AI assets reprice to over the <span class="b">next 24 months</span> — and how late do private marks find out?</h1>
+    <p class="sub">A deliberately simple two-engine model: price moves on the revenue <em>surprise</em> (actual growth vs the ~40%/yr already priced in) times the sentiment <em>multiple</em>. Six levers drive both. Private marks chase the public line with a lag and a downside-stickiness rule. Overlay prior tech cycles to see which one this run rhymes with.</p>
+  </div>
+</header>
+
+<div class="wrap grid">
+  <!-- ============ CONTROLS ============ -->
+  <aside class="controls">
+    <h2>Scenario</h2>
+    <div class="presets" id="presets"></div>
+
+    <h2>Levers</h2>
+    <div class="ctl">
+      <label>Open-source share of workloads by 2028 <span class="val" id="v_os"></span></label>
+      <div class="hint">Erodes proprietary pricing power → compresses the multiple. Enterprise share recently fell to ~13%.</div>
+      <input type="range" id="os" min="5" max="60" step="1">
+    </div>
+    <div class="ctl">
+      <label>Annual token price decline <span class="val" id="v_tok"></span></label>
+      <div class="hint">Prices fell ~80% in the last year. Deflation alone cuts revenue per task…</div>
+      <input type="range" id="tok" min="30" max="90" step="1">
+    </div>
+    <div class="ctl">
+      <label>Demand elasticity to cheaper tokens <span class="val" id="v_ela"></span></label>
+      <div class="hint">…unless usage grows faster than prices fall (Jevons). &gt;1.0 means cheap tokens grow revenue.</div>
+      <input type="range" id="ela" min="60" max="180" step="5">
+    </div>
+    <div class="ctl">
+      <label>Infrastructure constraint (power, chips, grid) <span class="val" id="v_infra"></span></label>
+      <div class="hint">Caps how fast revenue can grow — but scarcity also protects incumbents from overbuild and supports multiples.</div>
+      <input type="range" id="infra" min="0" max="100" step="1">
+    </div>
+    <div class="ctl">
+      <label>Enterprise productivity realization <span class="val" id="v_prod"></span></label>
+      <div class="hint">Share of pilots that convert to measured P&amp;L impact. Incumbents carry org, workflow, and legacy-stack drag.</div>
+      <input type="range" id="prod" min="10" max="70" step="1">
+    </div>
+    <div class="ctl">
+      <label>Startup-led share of adoption value <span class="val" id="v_sup"></span></label>
+      <div class="hint">AI-native startups realize gains without legacy overhead — faster demand, but spend shifts to challengers.</div>
+      <input type="range" id="sup" min="10" max="60" step="1">
+    </div>
+  </aside>
+
+  <!-- ============ CHART ============ -->
+  <main>
+    <div class="charthead">
+      <h2>Indexed price paths · Jun 2026 = 100</h2>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--blue)"></i>Public AI equities</span>
+        <span><i class="dot" style="background:var(--green)"></i>Private AI marks</span>
+      </div>
+    </div>
+    <svg id="chart" viewBox="0 0 860 430" role="img" aria-label="24 month projected price paths"></svg>
+    <div class="analogtoggles">
+      <span style="color:var(--muted);font-weight:500">Overlay prior cycles:</span>
+      <label style="color:var(--purple)"><input type="checkbox" id="a_bust" checked><span class="dash"></span>Nasdaq from Mar-2000 peak</label>
+      <label style="color:var(--orange)"><input type="checkbox" id="a_boom"><span class="dash"></span>Nasdaq 1998–2000 melt-up</label>
+      <label style="color:var(--magenta)"><input type="checkbox" id="a_saas"><span class="dash"></span>Cloud/SaaS from Nov-2021 peak</label>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n" id="s_pub">—</div><div class="l">Public, 24-mo return</div></div>
+      <div class="stat"><div class="n" id="s_prv">—</div><div class="l">Private marks, 24-mo</div></div>
+      <div class="stat"><div class="n" id="s_dd">—</div><div class="l">Public max drawdown</div></div>
+      <div class="stat"><div class="n" id="s_gap">—</div><div class="l">Public–private gap at exit</div></div>
+    </div>
+    <div class="rhyme" id="rhyme"></div>
+
+    <div class="machine">
+      <h2>How the levers connect</h2>
+      <svg id="causal" viewBox="0 0 860 240" role="img" aria-label="Causal diagram of model"></svg>
+    </div>
+  </main>
+</div>
+
+<!-- ============ ESSAY ============ -->
+<div class="wrap essay">
+  <h2>What's different from prior cycles</h2>
+
+  <h3><span class="node"></span>The revenue is real — and still an order of magnitude short of the capex</h3>
+  <p>Dot-com bears were right that 1999 revenue was mostly fictional. This time enterprise AI spend is real and compounding fast — but it remains a small fraction of the roughly half-trillion dollars of annual infrastructure capex. The bull case requires elasticity above 1: cheaper tokens must expand usage faster than they deflate price. That's the single most important slider above.</p>
+
+  <h3><span class="node"></span>Deflation is faster than bandwidth ever was</h3>
+  <p>Bandwidth got cheap over a decade; frontier-equivalent tokens got ~80% cheaper in a year, and open-weight models put a hard floor under what anyone can charge for mid-tier intelligence. In 2000, the commodity (fiber) was the overbuilt asset. Here the commodity may be the model itself — value migrates to applications, distribution, and proprietary data, which is where seed-stage exposure lives.</p>
+
+  <h3><span class="node"></span>Physical constraints are both the brake and the moat</h3>
+  <p>The fiber glut had no power bill. Today, grid interconnects, advanced packaging, and even helium supply ration how fast capacity can grow. Constraints cap the revenue line — but they also prevent the classic overbuild that vaporized telecom pricing, and they hand a scarcity premium to whoever already holds energized capacity. That's why the infrastructure slider pushes the multiple up even as it pushes growth down.</p>
+
+  <h3><span class="node"></span>Incumbents have the budgets; startups have the throughput</h3>
+  <p>Survey adoption is near-universal, but realized productivity inside large organizations is throttled by workflow, compliance, and legacy stacks — the pilots-to-P&amp;L conversion rate. AI-native startups skip that overhead entirely. If realization stays low while startup-led value share rises, incumbent software multiples compress even as aggregate AI usage grows. A boom for builders can coexist with a bust for index holders.</p>
+
+  <h3><span class="node"></span>The bubble, if it is one, is disproportionately private</h3>
+  <p>In 2000 the excess was listed and repriced in weeks. Today the largest AI valuations sit in private hands, marked quarterly, with downside stickiness — which is exactly what the green line models. The gap between the blue and green lines at month 24 is the unrealized repricing sitting in LP portfolios. Watch secondaries, not just tickers.</p>
+
+  <h3><span class="node"></span>This time capex is funded by cash flow, not debt</h3>
+  <p>The hyperscalers are spending earnings, not junk bonds — so a demand disappointment transmits to equity multiples first rather than credit markets, arguing for a 2022-style 50–60% growth-stock drawdown over a 2008-style systemic event. Unless debt-funded neocloud buildouts change that mix. Watch the financing channel, because it determines which historical overlay applies.</p>
+</div>
+
+<footer><div class="wrap">Deterministic toy model for scenario discussion — not investment advice or a forecast. Historical overlays are approximate monthly indices, rebased to 100. Built June 2026.</div></footer>
+
+<script>
+'use strict';
+/* ---------------- parameters ---------------- */
+const S = { os:18, tok:65, ela:125, infra:45, prod:30, sup:35 };
+
+const PRESETS = {
+  'Base case':              {os:18, tok:65, ela:125, infra:45, prod:30, sup:35},
+  'Soft landing':           {os:20, tok:55, ela:140, infra:40, prod:45, sup:35},
+  'Dot-com replay':         {os:40, tok:85, ela:90,  infra:15, prod:15, sup:30},
+  'Infra supercycle':       {os:15, tok:50, ela:160, infra:80, prod:40, sup:30},
+  'Commoditization grind':  {os:50, tok:80, ela:115, infra:30, prod:30, sup:50}
+};
+
+/* approximate historical overlays, rebased to 100, 25 monthly points */
+const ANALOGS = {
+  a_bust:{name:'Nasdaq from the Mar-2000 peak', color:'#8000FF',
+    d:[100,86,82,84,88,85,72,61,55,52,57,55,46,43,38,34,42,44,40,36,30,34,39,38,36]},
+  a_boom:{name:'Nasdaq melt-up, Oct-1998 onward', color:'#F05A00',
+    d:[100,113,127,143,146,142,148,144,155,163,158,162,173,200,243,272,226,211,237,243,253,246,202,200,198]},
+  a_saas:{name:'Cloud/SaaS from the Nov-2021 peak', color:'#E900E9',
+    d:[100,93,82,78,72,65,55,48,52,50,46,44,47,45,42,40,44,47,45,43,46,49,52,50,48]}
+};
+
+/* ---------------- model ---------------- */
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+
+function run(p){
+  const os=p.os/100, tok=p.tok/100, ela=p.ela/100, infra=p.infra, prod=p.prod/100, sup=p.sup/100;
+
+  // fundamental engine: annualized revenue growth
+  const demandCore  = 0.20 + 1.10*prod + 0.45*sup;        // productivity + startup throughput
+  const priceVolume = tok*(ela-1);                         // Jevons net effect
+  const rawGrowth   = demandCore + priceVolume;
+  const infraCap    = 0.95 - 0.0075*infra;                 // constraint ceiling
+  const gBase       = clamp(Math.min(rawGrowth, infraCap), -0.15, 1.20);
+
+  // sentiment engine: justified multiple vs today's premium (today = 1.0)
+  let J = 1.0
+        - 0.90*(os-0.18)                 // commoditization of the model layer
+        - 0.60*(tok-0.65)*(1.6-ela)      // deflation hurts more when demand is inelastic
+        + 0.0022*(infra-45)              // scarcity premium / overbuild protection
+        + 0.70*(prod-0.30)               // realized productivity sustains pricing
+        + 0.20*(sup-0.35);               // startup-led value keeps growth narrative alive
+  J = clamp(J, 0.35, 1.30);
+
+  // the market already prices in high growth — price moves on the SURPRISE
+  const gExp = 0.40;                                       // growth embedded in today's price
+  const pub=[100], rev=[1], revE=[1], mult=[1];
+  let capit=0; // capitulation months remaining (overshoot dynamic)
+  let peak=100;
+  for(let t=0;t<24;t++){
+    const decay = 1-0.25*t/24;                             // growth maturity decay
+    const r  = rev[t] * Math.pow(1+gBase*decay,1/12);
+    const re = revE[t]* Math.pow(1+gExp*decay, 1/12);
+    let Jeff = J;
+    const dd = 1 - pub[t]/peak;
+    if(dd>0.28 && capit===0 && J<0.95) capit=7;            // panic overshoot below fair value
+    if(capit>0){ Jeff=J*0.85; capit--; }
+    const gapRel=(Jeff-mult[t])/mult[t];
+    const speed = 1.2 + 3.0*Math.max(0,-gapRel);           // faster down than up
+    const m = mult[t]*Math.exp(speed*gapRel/12);
+    rev.push(r); revE.push(re); mult.push(m);
+    const price = 100*(r/re)*m;                            // revenue surprise × multiple
+    pub.push(price);
+    if(price>peak) peak=price;
+  }
+
+  // private marks: quarterly, beta<1 up, sticky down, capitulate on deep public drawdown
+  const prv=[100]; let v=100;
+  for(let t=1;t<=24;t++){
+    if(t%3===0){
+      const lo=Math.max(0,t-6);
+      const avg=pub.slice(lo,t+1).reduce((a,b)=>a+b,0)/(t+1-lo);
+      const target=0.80*avg + 0.20*100;                    // anchored to entry marks
+      if(target>v){ v += (target-v)*0.35; }
+      else{
+        const maxDownQ = (1 - pub[t]/peak) > 0.30 ? 0.08 : 0.04;   // marks stay in denial
+        v = Math.max(target, v*(1-maxDownQ));
+      }
+    }
+    prv.push(v);
+  }
+  return {pub,prv};
+}
+
+/* ---------------- chart ---------------- */
+const svg=document.getElementById('chart');
+const M={l:46,r:14,t:14,b:34}, W=860, H=430;
+const months=['Jun 26','Sep 26','Dec 26','Mar 27','Jun 27','Sep 27','Dec 27','Mar 28','Jun 28'];
+
+function path(d,x,y){return d.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');}
+
+function draw(){
+  const {pub,prv}=run(S);
+  const series=[pub,prv];
+  for(const k in ANALOGS) if(document.getElementById(k).checked) series.push(ANALOGS[k].d);
+  let lo=Math.min(...series.flat()), hi=Math.max(...series.flat());
+  lo=Math.floor((lo-8)/20)*20; hi=Math.ceil((hi+8)/20)*20; lo=Math.max(0,lo);
+  const x=i=>M.l+(W-M.l-M.r)*i/24;
+  const y=v=>M.t+(H-M.t-M.b)*(1-(v-lo)/(hi-lo));
+
+  let s='';
+  // grid + y labels
+  for(let v=lo;v<=hi;v+=20){
+    s+=`<line x1="${M.l}" y1="${y(v)}" x2="${W-M.r}" y2="${y(v)}" stroke="#efefef" stroke-width="1"/>`;
+    s+=`<text x="${M.l-8}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="#5a5a5a" font-family="Poppins">${v}</text>`;
+  }
+  // baseline at 100
+  s+=`<line x1="${M.l}" y1="${y(100)}" x2="${W-M.r}" y2="${y(100)}" stroke="#d9d9d9" stroke-width="1.4" stroke-dasharray="2 4"/>`;
+  // x labels each quarter
+  months.forEach((m,i)=>{ s+=`<text x="${x(i*3)}" y="${H-10}" text-anchor="middle" font-size="11" fill="#5a5a5a" font-family="Poppins">${m}</text>`; });
+
+  // analogs (thin dashed)
+  for(const k in ANALOGS){ if(!document.getElementById(k).checked) continue;
+    const a=ANALOGS[k];
+    s+=`<path d="${path(a.d,x,y)}" fill="none" stroke="${a.color}" stroke-width="1.6" stroke-dasharray="5 5" opacity=".85"/>`;
+  }
+  // private (green, step-ish with nodes)
+  s+=`<path d="${path(prv,x,y)}" fill="none" stroke="#00A100" stroke-width="2.6" stroke-linejoin="round"/>`;
+  // public (blue) — signature: mono line + solid quarterly nodes (24:7 dot-to-line ratio)
+  s+=`<path d="${path(pub,x,y)}" fill="none" stroke="#0000E9" stroke-width="2.6" stroke-linejoin="round"/>`;
+  for(let i=0;i<=24;i+=3){
+    s+=`<circle cx="${x(i)}" cy="${y(pub[i])}" r="4.4" fill="#0000E9"/>`;
+    s+=`<circle cx="${x(i)}" cy="${y(prv[i])}" r="4.4" fill="#00A100"/>`;
+  }
+  // end labels
+  s+=`<text x="${x(24)-2}" y="${y(pub[24])-10}" text-anchor="end" font-size="12" font-weight="600" fill="#0000E9" font-family="Poppins">${Math.round(pub[24])}</text>`;
+  s+=`<text x="${x(24)-2}" y="${y(prv[24])+18}" text-anchor="end" font-size="12" font-weight="600" fill="#00A100" font-family="Poppins">${Math.round(prv[24])}</text>`;
+  svg.innerHTML=s;
+
+  // stats
+  const pct=v=>((v>=0?'+':'')+v.toFixed(0)+'%');
+  let pk=pub[0],mdd=0; for(const v of pub){ pk=Math.max(pk,v); mdd=Math.max(mdd,1-v/pk); }
+  document.getElementById('s_pub').textContent=pct(pub[24]-100);
+  document.getElementById('s_prv').textContent=pct(prv[24]-100);
+  document.getElementById('s_dd').textContent='−'+(mdd*100).toFixed(0)+'%';
+  const gap=prv[24]-pub[24];
+  document.getElementById('s_gap').textContent=(gap>=0?'+':'')+gap.toFixed(0)+' pts';
+  document.getElementById('s_pub').style.color = pub[24]>=100 ? '#000' : '#D90000';
+  document.getElementById('s_dd').style.color  = mdd>0.25 ? '#D90000' : '#000';
+  document.getElementById('s_gap').style.color = gap>15 ? '#D90000' : '#000';
+
+  // closest rhyme (shape distance, normalized)
+  const norm=a=>{const m=Math.max(...a);return a.map(v=>v/m);};
+  const pn=norm(pub); let best=null,bd=1e9;
+  for(const k in ANALOGS){
+    const an=norm(ANALOGS[k].d);
+    const d=pn.reduce((acc,v,i)=>acc+(v-an[i])**2,0);
+    if(d<bd){bd=d;best=ANALOGS[k];}
+  }
+  const verdict = gap>15
+    ? 'Private marks exit '+gap.toFixed(0)+' points above public — that spread is deferred repricing in LP portfolios, visible first in secondaries pricing.'
+    : 'Private marks roughly track public by exit — limited overhang in this scenario.';
+  document.getElementById('rhyme').innerHTML='<strong>Closest historical rhyme:</strong> '+best.name+'. '+verdict;
+
+  drawCausal();
+}
+
+/* ---------------- causal diagram ---------------- */
+function drawCausal(){
+  const c=document.getElementById('causal');
+  const inputs=[
+    ['Open-source share','M',-1],['Token deflation','B',0],['Demand elasticity','R',1],
+    ['Infra constraint','B',0],['Productivity realized','B',1],['Startup-led value','B',1]
+  ];
+  // node positions
+  const ix=120, rx=430, mx2=430, px=740;
+  const iy=i=>36+i*34;
+  const Ry=70, My=176, Py=122;
+  let s='';
+  const line=(x1,y1,x2,y2,col,op)=>`<path d="M${x1} ${y1} C ${x1+90} ${y1}, ${x2-90} ${y2}, ${x2} ${y2}" fill="none" stroke="${col}" stroke-width="1.6" opacity="${op}"/>`;
+  // edges input → engines
+  const map=[ //[toRevenue?, toMultiple?]
+    [false,true],[true,true],[true,false],[true,true],[true,true],[true,true]
+  ];
+  inputs.forEach((inp,i)=>{
+    if(map[i][0]) s+=line(ix+8,iy(i),rx-58,Ry,'#d9d9d9',.9);
+    if(map[i][1]) s+=line(ix+8,iy(i),mx2-58,My,'#d9d9d9',.9);
+  });
+  s+=line(rx+62,Ry,px-46,Py,'#0000E9',1);
+  s+=line(mx2+62,My,px-46,Py,'#0000E9',1);
+  // green private tail
+  s+=`<path d="M${px+10} ${Py} C ${px+60} ${Py}, ${px+60} ${Py+58}, ${px+10} ${Py+58}" fill="none" stroke="#00A100" stroke-width="1.8" stroke-dasharray="4 4"/>`;
+  // input nodes
+  inputs.forEach((inp,i)=>{
+    s+=`<circle cx="${ix}" cy="${iy(i)}" r="5.2" fill="#000"/>`;
+    s+=`<text x="${ix-14}" y="${iy(i)+4}" text-anchor="end" font-size="12" font-family="Poppins" fill="#000">${inp[0]}</text>`;
+  });
+  // engine nodes
+  s+=`<circle cx="${rx}" cy="${Ry}" r="7" fill="#0000E9"/>`;
+  s+=`<text x="${rx}" y="${Ry-14}" text-anchor="middle" font-size="12.5" font-weight="600" font-family="Poppins">Revenue surprise</text>`;
+  s+=`<text x="${rx}" y="${Ry+24}" text-anchor="middle" font-size="11" fill="#5a5a5a" font-family="Poppins">actual growth vs ~40%/yr priced in, capped by infrastructure</text>`;
+  s+=`<circle cx="${mx2}" cy="${My}" r="7" fill="#0000E9"/>`;
+  s+=`<text x="${mx2}" y="${My-14}" text-anchor="middle" font-size="12.5" font-weight="600" font-family="Poppins">Multiple path</text>`;
+  s+=`<text x="${mx2}" y="${My+24}" text-anchor="middle" font-size="11" fill="#5a5a5a" font-family="Poppins">mean-reverts to justified level, overshoots in panic</text>`;
+  // price node
+  s+=`<circle cx="${px}" cy="${Py}" r="8" fill="#000"/>`;
+  s+=`<text x="${px+18}" y="${Py+4}" font-size="12.5" font-weight="600" font-family="Poppins">Public price</text>`;
+  s+=`<text x="${px+18}" y="${Py+62}" font-size="12.5" font-weight="600" fill="#00A100" font-family="Poppins">Private marks</text>`;
+  s+=`<text x="${px+18}" y="${Py+78}" font-size="11" fill="#5a5a5a" font-family="Poppins">lagged, sticky on the way down</text>`;
+  c.innerHTML=s;
+}
+
+/* ---------------- controls wiring ---------------- */
+const fmts={
+  os:v=>v+'%', tok:v=>'−'+v+'%/yr', ela:v=>(v/100).toFixed(2)+'×',
+  infra:v=>v<=20?'loose ('+v+')':v>=70?'severe ('+v+')':'moderate ('+v+')',
+  prod:v=>v+'% of pilots', sup:v=>v+'%'
+};
+function paint(id){
+  const el=document.getElementById(id);
+  const p=(el.value-el.min)/(el.max-el.min)*100;
+  el.style.setProperty('--p',p+'%');
+  document.getElementById('v_'+id).textContent=fmts[id](+el.value);
+}
+function setAll(vals,activeChip){
+  Object.assign(S,vals);
+  for(const k in vals){ document.getElementById(k).value=vals[k]; paint(k); }
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.textContent===activeChip));
+  draw();
+}
+['os','tok','ela','infra','prod','sup'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.value=S[id]; paint(id);
+  el.addEventListener('input',()=>{ S[id]=+el.value; paint(id);
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    draw(); });
+});
+const pr=document.getElementById('presets');
+Object.keys(PRESETS).forEach(name=>{
+  const b=document.createElement('button'); b.className='chip'; b.textContent=name;
+  b.onclick=()=>setAll(PRESETS[name],name);
+  pr.appendChild(b);
+});
+['a_bust','a_boom','a_saas'].forEach(id=>document.getElementById(id).addEventListener('change',draw));
+setAll(PRESETS['Base case'],'Base case');
+</script>
+</body>
+</html>
