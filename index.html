@@ -126,12 +126,12 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
     </div>
     <div class="ctl">
       <label>Enterprise productivity realization <span class="val" id="v_prod"></span></label>
-      <div class="hint">Share of pilots that convert to measured P&amp;L impact. Incumbents carry org, workflow, and legacy-stack drag.</div>
+      <div class="hint">Share of pilots converting to measured P&amp;L impact. Incumbents carry org, workflow, and legacy-stack drag — calibrate to economy-wide data (Census ~20% paid adoption), not VC-sample data.</div>
       <input type="range" id="prod" min="10" max="70" step="1">
     </div>
     <div class="ctl">
       <label>Startup-led share of adoption value <span class="val" id="v_sup"></span></label>
-      <div class="hint">AI-native startups realize gains without legacy overhead — faster demand, but spend shifts to challengers.</div>
+      <div class="hint">AI-native startups realize gains without legacy overhead. Calibrate to the leading edge: Ramp&rsquo;s (VC-skewed) sample shows ~50% of businesses paying for AI vs ~20% in Census surveys — that spread is this divergence.</div>
       <input type="range" id="sup" min="10" max="60" step="1">
     </div>
 
@@ -225,6 +225,10 @@ footer{border-top:1px solid var(--grid2);padding:18px 0 30px;font-size:12px;colo
 
   <h3><span class="node"></span>Labor data is the proof — and the political fuse</h3>
   <p>The best evidence that AI productivity is real won't come from earnings calls; it will show up in payroll data. Stanford's AI Economic Indicators (with ADP, tracking 730+ occupations) currently show exactly the in-between state the default slider encodes: aggregate employment divergence is modest, but early-career workers in exposed occupations are contracting nearly 4% a year while their less-exposed peers grow — and it's automation-skewed usage, not augmentation, that correlates with the declines. Their takeoff indicators stay undramatic too: TFP shows no break, capital share keeps climbing. So the model treats displacement as double-edged: it lifts effective productivity realization (the green coupling — firms don't cut headcount for a demo), but it feeds backlash and direct policy risk (AI taxes, severance mandates, deployment rules). Critically, the political channel is nonlinear: canaries don't move legislatures; aggregate numbers do. Past the midpoint of the slider the backlash coupling roughly triples — which is why the "Jobs shock" preset produces the model's purest divergence: revenue grows hard on proven productivity while the multiple gets repriced by the policy response. The strongest fundamental scenario and the strongest political reaction are the same scenario.</p>
+
+  <h3><span class="node"></span>Sources, calibration &amp; the refresh routine</h3>
+  <p>Three live sources anchor the defaults, each assigned to the lever it actually measures. The <a href="https://ramp.com/data/ai-index">Ramp AI Index</a> (monthly; 50,000+ businesses, transaction data) calibrates the <em>startup-led adoption</em> lever and the leading edge of token demand — but read it for what it is: Ramp&rsquo;s sample skews to VC-backed and venture-adjacent companies, where raised cash flows directly into token spend. That makes it an early-warning series, not an economy-wide one. The economy-wide levers — <em>productivity realization</em> and <em>labor displacement</em> — calibrate instead to Census-style surveys and Stanford&rsquo;s <a href="https://digitaleconomy.stanford.edu/app/uploads/2026/06/AIEI_RN01_Jun26.pdf">AI Economic Indicators</a> payroll data. The Ramp-vs-Census adoption spread (~50% vs ~20% today) is itself the startup/incumbent divergence this model prices; watch whether it closes upward (incumbents catching up — raise productivity realization) or whether Ramp rolls over first.</p>
+  <p>The Ramp series also carries this cycle&rsquo;s reflexivity risk: when the marginal token dollar is venture capital recycled, AI revenue is partly the funding boom measuring itself — the modern echo of telecom vendor financing in 1999, when equipment makers booked sales they had themselves financed. If venture funding tightens, Ramp-sample token spend falls mechanically, before any lab&rsquo;s reported revenue shows it. That is the first place a demand crack would be visible. Refresh routine: re-read Ramp monthly and the Stanford indicators as released, and revisit the default slider positions against them — the model&rsquo;s structure should outlive any quarter&rsquo;s numbers, but its anchors should not.</p>
 
   <h3><span class="node"></span>This time capex is funded by cash flow, not debt</h3>
   <p>The hyperscalers are spending earnings, not junk bonds — so a demand disappointment transmits to equity multiples first rather than credit markets, arguing for a 2022-style 50–60% growth-stock drawdown over a 2008-style systemic event. Unless debt-funded neocloud buildouts change that mix. Watch the financing channel, because it determines which historical overlay applies.</p>
