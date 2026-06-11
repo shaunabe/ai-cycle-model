@@ -20,3 +20,11 @@ GitHub Pages: Settings → Pages → Deploy from branch → `main` / root.
 Site serves at `https://<user>.github.io/ai-cycle-model/`.
 
 Third Sphere · June 2026
+
+## Calibration sources (refresh monthly/quarterly)
+
+- Ramp AI Index — https://ramp.com/data/ai-index — startup-led adoption + leading-edge
+  token demand. VC-skewed sample; treat as early warning, not economy-wide.
+- Stanford AI Economic Indicators — economy-wide productivity realization + labor
+  displacement (payroll data).
+- ai_infra_sim — https://github.com/shaunabe/ai_infra_sim — distributed inference shift.
